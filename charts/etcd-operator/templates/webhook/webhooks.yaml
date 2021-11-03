@@ -1,0 +1,66 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: defaulting.webhook.clusters.etcd-operator.sh
+webhooks:
+- admissionReviewVersions: ["v1"]
+  clientConfig:
+    service:
+      name: etcd-operator-webhook
+      namespace: '{{ .Release.Namespace }}'
+  failurePolicy: Fail
+  sideEffects: None
+  name: defaulting.webhook.clusters.etcd-operator.sh
+  rules:
+  - apiGroups:
+    - etcd-operator.sh
+    apiVersions:
+    - v1alpha1
+    resources:
+    - clusters
+      clusters/status
+    operations:
+    - CREATE
+    - UPDATE
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: validation.webhook.clusters.etcd-operator.sh
+webhooks:
+- admissionReviewVersions: ["v1"]
+  clientConfig:
+    service:
+      name: etcd-operator-webhook
+      namespace: '{{ .Release.Namespace }}'
+  failurePolicy: Fail
+  sideEffects: None
+  name: validation.webhook.clusters.etcd-operator.sh
+  rules:
+  - apiGroups:
+    - etcd-operator.sh
+    apiVersions:
+    - v1alpha1
+    resources:
+    - clusters
+      clusters/status
+    operations:
+    - CREATE
+    - UPDATE
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: validation.webhook.config.etcd-operator.sh
+webhooks:
+- admissionReviewVersions: ["v1"]
+  clientConfig:
+    service:
+      name: etcd-operator-webhook
+      namespace: '{{ .Release.Namespace }}'
+  failurePolicy: Fail
+  sideEffects: None
+  name: validation.webhook.config.etcd-operator.sh
+  objectSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: etcd-operator

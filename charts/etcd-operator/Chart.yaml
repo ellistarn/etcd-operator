@@ -1,0 +1,5 @@
+apiVersion: v2
+name: etcd-operator
+description: A Helm chart for https://github.com/ellistarn/etcd-operator/.
+type: application
+version: 0.4.1
